@@ -84,7 +84,7 @@ public class Job {
     func calculateIncome (_ hours: Int) -> Int {
         switch self.type {
         case .Hourly(let temp):
-            return Int(Int(temp) * hours)
+            return Int(temp * Double(hours))
         case .Salary(let temp):
             return Int(temp)
         }
@@ -122,14 +122,14 @@ public class Person {
     var job : Job?
     {
         didSet {
-            if age <= 18 {
+            if age < 18 {
                 job = nil
             }
         }
     }
     var spouse : Person? {
         didSet {
-            if age <= 21 {
+            if age < 21 {
                 spouse = nil
             }
         }
@@ -171,14 +171,12 @@ public class Family {
     
     func householdIncome () -> Int {
         var total = 0
-        for index in 0 ... members.count - 1 {
-            let job = members[index].job
+        for member in members{
+            let job = member.job
             if job != nil {
                 let salary = job!.calculateIncome(2000)
-                print("adding salary", salary)
                 total = total + salary
             }
-            print("this is total", total)
         }
         return total
     }
